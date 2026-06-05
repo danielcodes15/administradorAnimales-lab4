@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <header th:fragment="encabezado" class="site-header">
+        <div class="container nav">
+            <a class="brand" th:href="@{/}">
+                <span class="brand-mark">P&G</span>
+                <span>Mundo de Razas</span>
+            </a>
+            <nav>
+                <a th:href="@{/}">Inicio</a>
+                <a th:href="@{/razas}">Razas</a>
+                <a th:if="${esAdmin}" th:href="@{/categorias}">Categorias</a>
+                <a th:unless="${esAdmin}" th:href="@{/login}">Admin</a>
+                <form class="logout-form" th:if="${esAdmin}" th:action="@{/logout}" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <button type="submit">Salir</button>
+                </form>
+            </nav>
+        </div>
+    </header>
+
+    <footer th:fragment="pie" class="site-footer">
+        <div class="container">
+            <p>Laboratorio 4 · Arquitectura MVC con Spring Boot, Thymeleaf y JPA</p>
+        </div>
+    </footer>
+</body>
+</html>

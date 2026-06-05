@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo de Razas</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: encabezado}"></header>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-grid">
+                <div>
+                    <span class="eyebrow">Catalogo de razas</span>
+                    <h1>Conoce razas y tipos de animales por clasificacion</h1>
+                    <p>Especie identifica el animal; categoria lo clasifica como Domestico, Carnivoro, Herbivoro u otra.</p>
+                    <a class="button" th:href="@{/razas}"
+                       th:text="${esAdmin} ? 'Administrar razas' : 'Ver razas'">Ver razas</a>
+                </div>
+                <div class="hero-symbols" aria-hidden="true">
+                    <span>ANIMALES</span>
+                    <strong>&</strong>
+                    <span>RAZAS</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="container section">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Catálogo</span>
+                    <h2>Razas disponibles</h2>
+                </div>
+                <div class="filters">
+                    <a th:classappend="${categoriaSeleccionada == null} ? ' active'"
+                       th:href="@{/}">Todas</a>
+                    <a th:each="categoria : ${categorias}"
+                       th:text="${categoria.nombre}"
+                       th:classappend="${categoria.id == categoriaSeleccionada} ? ' active'"
+                       th:href="@{/(categoria=${categoria.id})}"></a>
+                </div>
+            </div>
+
+            <div class="card-grid" th:if="${!razas.isEmpty()}">
+                <article class="breed-card" th:each="raza : ${razas}">
+                    <div class="card-top has-image">
+                        <img th:if="${raza.tieneImagen()}"
+                             th:src="@{/razas/{id}/imagen(id=${raza.id})}"
+                             th:alt="${raza.nombre}">
+                        <span>
+                            <span th:text="${raza.especie}">Especie</span>
+                            -
+                            <span th:text="${raza.categoria.nombre}">Categoria</span>
+                        </span>
+                        <strong th:unless="${raza.tieneImagen()}"
+                                th:text="${#strings.substring(raza.nombre, 0, 1)}">R</strong>
+                    </div>
+                    <div class="card-body">
+                        <h3 th:text="${raza.nombre}">Nombre</h3>
+                        <p th:text="${raza.descripcion}">Descripción</p>
+                        <dl>
+                            <div>
+                                <dt>Especie</dt>
+                                <dd th:text="${raza.especie}">Animal</dd>
+                            </div>
+                            <div>
+                                <dt>Categoria</dt>
+                                <dd th:text="${raza.categoria.nombre}">Domestico</dd>
+                            </div>
+                            <div>
+                                <dt>Origen</dt>
+                                <dd th:text="${raza.origen}">Origen</dd>
+                            </div>
+                            <div>
+                                <dt>Vida</dt>
+                                <dd><span th:text="${raza.esperanzaVida}">12</span> años</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </article>
+            </div>
+            <div class="empty-state" th:if="${razas.isEmpty()}">
+                <h3>No hay razas en esta categoría</h3>
+                <p th:if="${esAdmin}">Agrega una nueva raza desde el panel de administracion.</p>
+                <p th:unless="${esAdmin}">Prueba con otra clasificacion disponible.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragmentos :: pie}"></footer>
+</body>
+</html>

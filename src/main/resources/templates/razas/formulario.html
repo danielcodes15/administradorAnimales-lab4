@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">Raza</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: encabezado}"></header>
+    <main class="container section form-page">
+        <a class="back-link" th:href="@{/razas}">← Volver a razas</a>
+        <div class="form-card wide">
+            <span class="eyebrow">Catálogo</span>
+            <h1 th:text="${titulo}">Raza</h1>
+            <form th:action="@{/razas/guardar}" th:object="${raza}" method="post"
+                  enctype="multipart/form-data">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <input type="hidden" th:field="*{id}">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="nombre">Nombre de la raza</label>
+                        <input id="nombre" type="text" th:field="*{nombre}"
+                               placeholder="Ejemplo: Labrador Retriever">
+                        <span class="field-error" th:errors="*{nombre}"></span>
+                    </div>
+                    <div class="field">
+                        <label for="especie">Especie</label>
+                        <input id="especie" type="text" th:field="*{especie}"
+                               placeholder="Ejemplo: Leon, Caballo, Aguila, Serpiente">
+                        <small class="field-help">La especie identifica el animal al que pertenece la raza o tipo.</small>
+                        <span class="field-error" th:errors="*{especie}"></span>
+                    </div>
+                    <div class="field">
+                        <label for="categoria">Clasificacion de la raza</label>
+                        <select id="categoria" th:field="*{categoria}">
+                            <option value="">Seleccione Domestico, Carnivoro, De compania, etc.</option>
+                            <option th:each="categoria : ${categorias}"
+                                    th:value="${categoria.id}"
+                                    th:text="${categoria.nombre}"></option>
+                        </select>
+                        <small class="field-help">La categoria clasifica el comportamiento o uso de la raza.</small>
+                        <span class="field-error" th:errors="*{categoria}"></span>
+                    </div>
+                    <div class="field">
+                        <label for="origen">País o región de origen</label>
+                        <input id="origen" type="text" th:field="*{origen}"
+                               placeholder="Ejemplo: Alemania">
+                        <span class="field-error" th:errors="*{origen}"></span>
+                    </div>
+                    <div class="field">
+                        <label for="esperanzaVida">Esperanza de vida (años)</label>
+                        <input id="esperanzaVida" type="number" min="1"
+                               th:field="*{esperanzaVida}" placeholder="12">
+                        <span class="field-error" th:errors="*{esperanzaVida}"></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" th:field="*{descripcion}" rows="5"
+                              placeholder="Describe el carácter y características de la raza"></textarea>
+                    <span class="field-error" th:errors="*{descripcion}"></span>
+                </div>
+                <div class="field">
+                    <label for="archivoImagen">Imagen de la raza</label>
+                    <input id="archivoImagen" name="archivoImagen" type="file"
+                           accept="image/jpeg,image/png,image/gif,image/webp">
+                    <small class="field-help">Formatos de imagen, máximo 5 MB.</small>
+                    <span class="field-error" th:if="${errorImagen}" th:text="${errorImagen}"></span>
+                    <div class="current-image" th:if="${raza.id != null and raza.tieneImagen()}">
+                        <span>Imagen actual:</span>
+                        <img th:src="@{/razas/{id}/imagen(id=${raza.id})}"
+                             th:alt="${raza.nombre}">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a class="button secondary" th:href="@{/razas}">Cancelar</a>
+                    <button class="button" type="submit">Guardar raza</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer th:replace="~{fragmentos :: pie}"></footer>
+</body>
+</html>
