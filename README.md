@@ -83,17 +83,23 @@ Luego abrir `http://localhost:8092`.
 
 Las pruebas usan una base H2 temporal en memoria y no modifican MySQL.
 
-## Git solicitado por la rúbrica
+## Repositorio
 
-Desde esta carpeta se puede iniciar el repositorio y una rama de trabajo:
+Repositorio en GitHub:
 
-```powershell
-git init
-git branch -M main
-git add .
-git commit -m "feat: crear catalogo MVC de animales"
-git switch -c desarrollo
+```text
+https://github.com/danielcodes15/administradorAnimales-lab4
 ```
 
-Después se debe crear en GitHub un repositorio con el nombre indicado por el
-docente, agregarlo como remoto y subir las ramas.
+Ramas principales:
+
+- `main`
+- `desarrollo_Lab4`
+
+Para clonar el proyecto:
+
+```powershell
+git clone https://github.com/danielcodes15/administradorAnimales-lab4.git
+cd administradorAnimales-lab4
+git switch desarrollo_Lab4
+```
